@@ -1,0 +1,5 @@
+{
+  "name": "WiZ BLE Smart Dimmer (Unofficial)",
+  "homeassistant": "2026.11.0",
+  "render_readme": true
+}

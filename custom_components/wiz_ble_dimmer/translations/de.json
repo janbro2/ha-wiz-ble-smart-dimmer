@@ -1,0 +1,19 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "WiZ BLE Smart Dimmer",
+        "description": "Gib die Bluetooth-Adresse aus dem Home-Assistant-Werbepaketmonitor ein. Verwende Großbuchstaben und Doppelpunkte, z. B. AA:BB:CC:DD:EE:FF.",
+        "data": {
+          "mac": "Bluetooth-Adresse der Fernbedienung"
+        }
+      }
+    },
+    "error": {
+      "invalid_mac": "Ungültige Bluetooth-Adresse. Erwartet wird AA:BB:CC:DD:EE:FF."
+    },
+    "abort": {
+      "already_configured": "Dieser Dimmer ist bereits eingerichtet."
+    }
+  }
+}

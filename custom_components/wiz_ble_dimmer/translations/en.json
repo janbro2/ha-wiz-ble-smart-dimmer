@@ -1,0 +1,19 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "WiZ BLE Smart Dimmer",
+        "description": "Enter the Bluetooth address shown in Home Assistant's Bluetooth advertisement monitor. Use uppercase letters and colons, e.g. AA:BB:CC:DD:EE:FF.",
+        "data": {
+          "mac": "Bluetooth address of the remote"
+        }
+      }
+    },
+    "error": {
+      "invalid_mac": "Invalid Bluetooth address. Expected AA:BB:CC:DD:EE:FF."
+    },
+    "abort": {
+      "already_configured": "This dimmer is already configured."
+    }
+  }
+}

@@ -1,0 +1,180 @@
+blueprint:
+  name: WiZ BLE Smart Dimmer – 8 buttons (unofficial)
+  description: >
+    Use an experimental WiZ BLE Smart Dimmer with any Home Assistant lights.
+    Requires the separate 'WiZ BLE Smart Dimmer (Unofficial)' integration.
+    Set an on-brightness, dimming steps, and four existing Home Assistant scenes.
+    Each scene restores its own saved brightness when recalled.
+  domain: automation
+  homeassistant:
+    min_version: 2026.11.0
+  input:
+    remote_mac:
+      name: Dimmer Bluetooth address
+      description: >
+        Use the MAC address configured in WiZ BLE Smart Dimmer; uppercase
+        AA:BB:CC:DD:EE:FF. The integration is required to emit events.
+      selector:
+        text: {}
+    light_target:
+      name: Lights to turn on/off and dim
+      selector:
+        target:
+          entity:
+            domain: light
+    on_brightness:
+      name: Brightness for ON button
+      default: 100
+      selector:
+        number:
+          min: 1
+          max: 100
+          step: 1
+          mode: slider
+          unit_of_measurement: "%"
+    brightness_step:
+      name: Brightness change per + or - press
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          step: 1
+          mode: slider
+          unit_of_measurement: "%"
+    scene_1:
+      name: Scene 1
+      selector:
+        entity:
+          domain: scene
+    scene_2:
+      name: Scene 2
+      selector:
+        entity:
+          domain: scene
+    scene_3:
+      name: Scene 3
+      selector:
+        entity:
+          domain: scene
+    scene_4:
+      name: Scene 4
+      selector:
+        entity:
+          domain: scene
+
+triggers:
+  - trigger: event
+    event_type: wiz_dimmer_button
+    event_data:
+      address: !input remote_mac
+      action: on
+    id: on
+  - trigger: event
+    event_type: wiz_dimmer_button
+    event_data:
+      address: !input remote_mac
+      action: off
+    id: off
+  - trigger: event
+    event_type: wiz_dimmer_button
+    event_data:
+      address: !input remote_mac
+      action: brighter
+    id: brighter
+  - trigger: event
+    event_type: wiz_dimmer_button
+    event_data:
+      address: !input remote_mac
+      action: dimmer
+    id: dimmer
+  - trigger: event
+    event_type: wiz_dimmer_button
+    event_data:
+      address: !input remote_mac
+      action: scene_1
+    id: scene_1
+  - trigger: event
+    event_type: wiz_dimmer_button
+    event_data:
+      address: !input remote_mac
+      action: scene_2
+    id: scene_2
+  - trigger: event
+    event_type: wiz_dimmer_button
+    event_data:
+      address: !input remote_mac
+      action: scene_3
+    id: scene_3
+  - trigger: event
+    event_type: wiz_dimmer_button
+    event_data:
+      address: !input remote_mac
+      action: scene_4
+    id: scene_4
+
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: on
+        sequence:
+          - action: light.turn_on
+            target: !input light_target
+            data:
+              brightness_pct: !input on_brightness
+      - conditions:
+          - condition: trigger
+            id: off
+        sequence:
+          - action: light.turn_off
+            target: !input light_target
+      - conditions:
+          - condition: trigger
+            id: brighter
+        sequence:
+          - action: light.turn_on
+            target: !input light_target
+            data:
+              brightness_step_pct: !input brightness_step
+      - conditions:
+          - condition: trigger
+            id: dimmer
+        sequence:
+          - action: light.turn_on
+            target: !input light_target
+            data:
+              brightness_step_pct: "{{ 0 - brightness_step }}"
+      - conditions:
+          - condition: trigger
+            id: scene_1
+        sequence:
+          - action: scene.turn_on
+            target:
+              entity_id: !input scene_1
+      - conditions:
+          - condition: trigger
+            id: scene_2
+        sequence:
+          - action: scene.turn_on
+            target:
+              entity_id: !input scene_2
+      - conditions:
+          - condition: trigger
+            id: scene_3
+        sequence:
+          - action: scene.turn_on
+            target:
+              entity_id: !input scene_3
+      - conditions:
+          - condition: trigger
+            id: scene_4
+        sequence:
+          - action: scene.turn_on
+            target:
+              entity_id: !input scene_4
+mode: queued
+max: 15
+variables:
+  brightness_step: !input brightness_step

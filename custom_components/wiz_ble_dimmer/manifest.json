@@ -1,0 +1,17 @@
+{
+  "domain": "wiz_ble_dimmer",
+  "name": "WiZ BLE Smart Dimmer (Unofficial)",
+  "version": "0.2.0",
+  "config_flow": true,
+  "dependencies": [
+    "bluetooth"
+  ],
+  "requirements": [],
+  "codeowners": [
+    "@janbro2"
+  ],
+  "integration_type": "device",
+  "iot_class": "local_push",
+  "documentation": "https://github.com/janbro2/ha-wiz-ble-smart-dimmer#readme",
+  "issue_tracker": "https://github.com/janbro2/ha-wiz-ble-smart-dimmer/issues"
+}
